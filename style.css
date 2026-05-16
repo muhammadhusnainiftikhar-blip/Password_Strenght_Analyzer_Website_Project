@@ -1,0 +1,541 @@
+/* ========================================
+   RESET & BASE STYLES
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #667eea;
+    --primary-dark: #5a67d8;
+    --secondary: #764ba2;
+    --success: #48bb78;
+    --warning: #ed8936;
+    --danger: #f56565;
+    --dark: #2d3748;
+    --light: #f7fafc;
+    --gray: #a0aec0;
+    
+    --brute-color: #667eea;
+    --dictionary-color: #48bb78;
+    --hybrid-color: #ed8936;
+    
+    --uppercase-color: #f56565;
+    --lowercase-color: #48bb78;
+    --numbers-color: #4299e1;
+    --special-color: #ed8936;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 40px);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.main-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.header-content h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header-content p {
+    opacity: 0.9;
+    font-size: 1.1em;
+}
+
+.status-badge {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 5px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    font-size: 0.85em;
+}
+
+.status-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ffaa44;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.auto-save-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 15px;
+    background: rgba(72, 187, 120, 0.2);
+    border-radius: 20px;
+    font-size: 0.8em;
+    border: 1px solid rgba(72, 187, 120, 0.5);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0%, 100% { 
+        background: rgba(72, 187, 120, 0.2);
+        border-color: rgba(72, 187, 120, 0.5);
+    }
+    50% { 
+        background: rgba(72, 187, 120, 0.4);
+        border-color: rgba(72, 187, 120, 0.8);
+    }
+}
+
+/* ========================================
+   GRID LAYOUT
+   ======================================== */
+.main-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    flex: 1;
+    align-items: stretch;
+}
+
+.left-panel,
+.right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Make panels stretch to full height */
+.left-panel, .right-panel {
+    height: 100%;
+}
+
+/* ========================================
+   CARDS
+   ======================================== */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    padding: 15px 20px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.card-header h2 {
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.card-body {
+    padding: 20px;
+    color: var(--dark);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Special styling for radar chart card to stretch */
+.right-panel .card:last-child {
+    flex: 1;
+}
+
+.right-panel .card:last-child .card-body {
+    justify-content: center;
+}
+
+/* Make canvas fill available space */
+canvas {
+    width: 100%;
+    height: auto;
+    max-height: 280px;
+}
+
+/* For radar chart - make it larger */
+.right-panel .card:last-child canvas {
+    max-height: 350px;
+    min-height: 280px;
+}
+
+/* ========================================
+   PASSWORD INPUT
+   ======================================== */
+.password-input-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#passwordInput {
+    flex: 1;
+    padding: 14px;
+    font-size: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-family: 'Courier New', monospace;
+}
+
+#passwordInput:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.toggle-visibility {
+    padding: 0 20px;
+    background: var(--primary);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s;
+    color: white;
+}
+
+.toggle-visibility:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/* Quick Examples */
+.quick-examples {
+    margin-top: 10px;
+}
+
+.quick-examples label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #4a5568;
+}
+
+.example-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.example-buttons button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.example-weak {
+    background: var(--danger);
+    color: white;
+}
+
+.example-medium {
+    background: var(--warning);
+    color: white;
+}
+
+.example-strong {
+    background: var(--success);
+    color: white;
+}
+
+.example-buttons button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+
+/* ========================================
+   STRENGTH METER
+   ======================================== */
+.strength-meter {
+    width: 100%;
+    height: 40px;
+    background: #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.meter-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.5s ease, background 0.3s;
+    border-radius: 20px;
+}
+
+.strength-label {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 8px;
+}
+
+.strength-description {
+    text-align: center;
+    font-size: 0.9em;
+    color: #718096;
+}
+
+/* ========================================
+   CHARACTER BREAKDOWN
+   ======================================== */
+.breakdown-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.uppercase-stat { background: rgba(245, 101, 101, 0.1); border-left: 4px solid var(--uppercase-color); }
+.lowercase-stat { background: rgba(72, 187, 120, 0.1); border-left: 4px solid var(--lowercase-color); }
+.number-stat { background: rgba(66, 153, 225, 0.1); border-left: 4px solid var(--numbers-color); }
+.special-stat { background: rgba(237, 137, 54, 0.1); border-left: 4px solid var(--special-color); }
+.total-stat { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-left: 4px solid white; }
+
+.stat-label {
+    font-weight: 600;
+}
+
+.stat-value {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* ========================================
+   COMPLEXITY SCORE
+   ======================================== */
+.complexity-score-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.complexity-score {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 10px;
+}
+
+.score-number {
+    font-size: 5em;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.score-max {
+    font-size: 1.5em;
+    color: var(--gray);
+}
+
+/* ========================================
+   CRACK TIME DISPLAY
+   ======================================== */
+.crack-time-display {
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 12px;
+    color: white;
+}
+
+.time-value {
+    font-size: 2em;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+.time-label {
+    font-size: 0.9em;
+    opacity: 0.9;
+    margin-top: 5px;
+}
+
+/* Attack Methods Info */
+.attack-methods-info {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 10px;
+}
+
+.method-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 0.85em;
+    color: #4a5568;
+}
+
+.method-info:last-child {
+    margin-bottom: 0;
+}
+
+.method-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.method-color.brute { background: var(--brute-color); }
+.method-color.dictionary { background: var(--dictionary-color); }
+.method-color.hybrid { background: var(--hybrid-color); }
+
+/* ========================================
+   RECOMMENDATIONS
+   ======================================== */
+.recommendations-list {
+    padding: 15px;
+    background: #f7fafc;
+    border-radius: 10px;
+    min-height: 150px;
+    flex: 1;
+}
+
+.recommendations-list ul {
+    margin-left: 20px;
+}
+
+.recommendations-list li {
+    margin: 10px 0;
+    color: #4a5568;
+}
+
+.placeholder-text {
+    color: var(--gray);
+    text-align: center;
+    padding: 20px;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+.main-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    font-size: 0.85em;
+}
+
+.main-footer p {
+    margin: 5px 0;
+}
+
+/* ========================================
+   SCROLLBAR STYLING
+   ======================================== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 1024px) {
+    .main-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .breakdown-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .right-panel .card:last-child canvas {
+        max-height: 280px;
+    }
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 10px;
+    }
+    
+    .header-content h1 {
+        font-size: 1.5em;
+    }
+    
+    .example-buttons {
+        flex-direction: column;
+    }
+    
+    .breakdown-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .time-value {
+        font-size: 1.3em;
+    }
+}

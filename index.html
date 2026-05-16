@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Password Strength Analyzer Pro 🔐 | Enterprise Security Tool</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="main-header">
+            <div class="header-content">
+                <h1>🔐 PASSWORD STRENGTH ANALYZER PRO</h1>
+                <p>Enterprise-grade password security analysis & crack time simulator</p>
+                <div class="status-badge" id="serverStatus">
+                    <span class="status-dot"></span>
+                    Checking server...
+                </div>
+                <div class="auto-save-badge">
+                    💾 Auto-saving every password to CSV
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Grid Layout - 2 columns -->
+        <div class="main-grid">
+            <!-- LEFT COLUMN - Stats & Recommendations -->
+            <div class="left-panel">
+                <!-- Password Input Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📝 Password Input</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="password-input-container">
+                            <input type="password" id="passwordInput" placeholder="Enter password to analyze..." oninput="analyzePassword()" autocomplete="off">
+                            <button class="toggle-visibility" onclick="togglePasswordVisibility()" title="Show/Hide Password">👁️</button>
+                        </div>
+                        
+                        <div class="quick-examples">
+                            <label>Quick examples:</label>
+                            <div class="example-buttons">
+                                <button onclick="setExample('password123')" class="example-weak">Weak</button>
+                                <button onclick="setExample('P@ssw0rd2024')" class="example-medium">Medium</button>
+                                <button onclick="setExample('X#k9$mQ@2&pL!8^nR')" class="example-strong">Strong</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strength Meter Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>⚡ Strength Meter</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="strength-meter">
+                            <div class="meter-bar" id="strengthBar"></div>
+                        </div>
+                        <div class="strength-label" id="strengthLabel">Enter a password</div>
+                        <div class="strength-description" id="strengthDesc"></div>
+                    </div>
+                </div>
+
+                <!-- Character Breakdown Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🔍 Character Breakdown</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="breakdown-stats">
+                            <div class="stat-item uppercase-stat">
+                                <span class="stat-label">🔤 Uppercase (A-Z)</span>
+                                <span class="stat-value" id="uppercaseCount">0</span>
+                            </div>
+                            <div class="stat-item lowercase-stat">
+                                <span class="stat-label">🔡 Lowercase (a-z)</span>
+                                <span class="stat-value" id="lowercaseCount">0</span>
+                            </div>
+                            <div class="stat-item number-stat">
+                                <span class="stat-label">🔢 Numbers (0-9)</span>
+                                <span class="stat-value" id="numberCount">0</span>
+                            </div>
+                            <div class="stat-item special-stat">
+                                <span class="stat-label">✨ Special Characters</span>
+                                <span class="stat-value" id="specialCount">0</span>
+                            </div>
+                            <div class="stat-item total-stat">
+                                <span class="stat-label">📏 Total Length</span>
+                                <span class="stat-value" id="totalLength">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complexity Score Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>🎯 Complexity Score</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="complexity-score-container">
+                            <div class="complexity-score">
+                                <div class="score-number" id="complexityScore">0</div>
+                                <div class="score-max">/ 100</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crack Time Display Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>⏱️ Estimated Crack Time</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="crack-time-display" id="crackTimeDisplay">
+                            <div class="time-value">--</div>
+                            <div class="time-label">Brute force at 1B guesses/sec</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>💡 Recommendations</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="recommendations" class="recommendations-list">
+                            <p class="placeholder-text">Enter a password to see recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN - All Graphs -->
+            <div class="right-panel">
+                <!-- Character Distribution Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📊 Character Distribution</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="charDistributionChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Crack Time Comparison Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>⚔️ Attack Method Comparison</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="crackTimeChart"></canvas>
+                        <div class="attack-methods-info">
+                            <div class="method-info">
+                                <span class="method-color brute"></span>
+                                <span><strong>Brute Force</strong> - Tries every possible combination</span>
+                            </div>
+                            <div class="method-info">
+                                <span class="method-color dictionary"></span>
+                                <span><strong>Dictionary Attack</strong> - Uses common words & passwords</span>
+                            </div>
+                            <div class="method-info">
+                                <span class="method-color hybrid"></span>
+                                <span><strong>Hybrid Attack</strong> - Dictionary + mutations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complexity Factors Radar Chart -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>📈 Complexity Factors Radar</h2>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="complexityFactorsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <p>🔒 Passwords are analyzed locally. No data is sent to any external server.</p>
+            <p>💾 Auto-saving enabled: Every password you type is saved to CSV (password_reports.csv)</p>
+            <p>© 2026 Password Strength Analyzer Pro | Security First</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
